@@ -1,0 +1,64 @@
+Create Ubuntu instance
+
+Install java 8
+----------------
+sudo apt-get install openjdk-8-jdk
+
+Install jenkins 
+-------------------
+follow this document to install jenkins
+https://www.liquidweb.com/kb/installing-jenkins-on-ubuntu-16-04/     
+
+
+Install sonarqube
+--------------------
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-5.6.7.zip
+
+apt-get -y install unzip
+sudo unzip sonarqube-5.6.7.zip -d /opt
+sudo mv /opt/sonarqube-5.6.7 /opt/sonarqube
+sudo nano /opt/sonarqube/conf/sonar.properties
+uncomment
+#sonar.jdbc.username=
+#sonar.jdbc.password=
+
+provide username passwd
+
+sonar.jdbc.username=sonar
+sonar.jdbc.password=StrongPassword
+
+nano /etc/systemd/system/sonar.service
+
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+User=root
+Group=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl start sonar
+
+sudo systemctl enable sonar
+sudo systemctl status sonar
+
+Follow the document to install sonarqube
+https://www.vultr.com/docs/how-to-install-sonarqube-on-ubuntu-16-04
+
+
+
+
+Install nexus
+------------------
+  https://epma.medium.com/install-sonatype-nexus-3-on-ubuntu-20-04-lts-562f8ba20b98
+
+
