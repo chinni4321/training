@@ -1,0 +1,55 @@
+docker run --name jenkins -p 8181:8080 -p 50000:50000 -v /var/lib/jenkins:/var/jenkins_home jenkins/jenkins:lts-jdk11
+
+
+
+
+docker run --name jenkins -p 8080:8080 -p 50000:50000 -v test-volume:/var/jenkins_home jenkins/jenkins:lts-jdk11
+docker run -dt  —name jenkins1 -p 7070:8080 -p 40000:40000 -v test-volume:/var/jenkins_home jenkins/jenkins:lts-jdk11
+docker run --name testvolume -p 9191:8080 -p 60000:60000 -v test-volume:/var/jenkins_home jenkins/jenkins:lts-jdk11
+docker run --name testvolume -p 9191:8080 -p 60000:60000 -v /var/lib/jenkins:/var/jenkins_home jenkins/jenkins:lts-jdk11
+
+docker run --name testvolume -p 7070:8080 -p 40000:40000 -v /var/jenkins_test_path:/var/jenkins_home jenkins/jenkins:lts-jdk11
+
+
+
+docker run --name rajesh -p 8080:8080 -p 50000:50000 -v rajesh:/var/jenkins_home jenkins/jenkins:lts-jdk11
+
+docker -v
+docker volume --help
+docker volume create test-volume
+docker volume ls
+docker volume inspect test-volume
+docker volume purne
+
+docker run --name jenkins -p 8080:8080 -p 50000:50000 -v test-volume:/var/jenkins_home jenkins
+
+docker run --name jenkins -p 9191:8080 -p 60000:60000 -v test-volume:/var/jenkins_home jenkins
+
+
+-------------------------------------------------------------
+
+172.17.0.3
+
+docker run -it --name=alpine1 alpine
+docker run -itd --name=alpine2 alpine
+docker network inspect bridge
+docker network create --driver=bridge chinni
+docker run -itd --name=alpine1 --network=chinni alpine
+
+docker container inspect --help
+docker container inspect -f '{{.NetworkSettings.IPAddress}}' containerid
+ipconfig eth0
+docker container run -p 8080:80 -d nginx
+
+
+docker swarm init
+To create overlay network ----> multi-host connecting network basiclly it uses for docker swarm
+
+
+
+       bridge-->Host mapping
+  8080      80          a
+ 
+docker run --name jenkins -p 9091:8080 -p 50000:50000 -v test-volume:/var/jenkins_home jenkins
+docker run -it --network host jenkins/jenkins:lts-jdk11
+docker run -it --network none centos /bin/bash
