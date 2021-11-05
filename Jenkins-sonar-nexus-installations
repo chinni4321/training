@@ -4,10 +4,14 @@ Install java 8
 ----------------
 sudo apt-get install openjdk-8-jdk
 
+Install Maven 3.3.9
+---------------------
+http://javedmandary.blogspot.com/2016/09/install-maven-339-on-ubuntu.html
+
 Install jenkins 
 -------------------
 follow this document to install jenkins
-https://www.liquidweb.com/kb/installing-jenkins-on-ubuntu-16-04/     
+https://www.liquidweb.com/kb/installing-jenkins-on-ubuntu-16-04/    
 
 
 Install sonarqube
