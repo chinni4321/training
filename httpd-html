@@ -2,6 +2,6 @@
 
 yum install httpd -y
 systemctl enable httpd
-mdir /var/www/html/inventory/
+mkdir /var/www/html/inventory/
 echo "<h1>This is inventory service</h1>" > /var/www/html/inventory/index.html
 systemctl start httpd 
