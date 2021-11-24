@@ -13,6 +13,10 @@ Install jenkins
 follow this document to install jenkins
 https://www.liquidweb.com/kb/installing-jenkins-on-ubuntu-16-04/    
 
+GCP to install jenkins:
+---------------------
+https://askubuntu.com/questions/512867/unable-to-install-recover-jenkins-after-upgrading-from-ubuntu-12-04-to-14-04
+
 
 Install sonarqube
 --------------------
