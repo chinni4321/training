@@ -11,7 +11,10 @@ http://javedmandary.blogspot.com/2016/09/install-maven-339-on-ubuntu.html
 Install jenkins 
 -------------------
 follow this document to install jenkins
-https://www.liquidweb.com/kb/installing-jenkins-on-ubuntu-16-04/    
+https://www.liquidweb.com/kb/installing-jenkins-on-ubuntu-16-04/ 
+
+If you’re facing with above jenkins installation. Please follow below link
+https://serverfault.com/questions/1034893/installing-jenkins-on-ubuntu-tells-me-package-jenkins-has-no-installation-can
 
 GCP to install jenkins:
 ---------------------
