@@ -7,6 +7,7 @@ docker ps -a
 docker run -it --name test-container containerID
 docker run -dt --name test-conatiner conatinerID
 docker exec -it containerID /bin/bash
+cntrl pq (To exit from the running container without stopping)
 docker system df -v
 docker system df 
 
