@@ -67,9 +67,11 @@ https://www.vultr.com/docs/how-to-install-sonarqube-on-ubuntu-16-04
 
 
 
-
 Install nexus
 ------------------
-  https://epma.medium.com/install-sonatype-nexus-3-on-ubuntu-20-04-lts-562f8ba20b98
+https://epma.medium.com/install-sonatype-nexus-3-on-ubuntu-20-04-lts-562f8ba20b98
 
 
+Install Docker
+---------------
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
