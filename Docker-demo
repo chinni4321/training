@@ -10,6 +10,11 @@ docker exec -it containerID /bin/bash
 cntrl pq (To exit from the running container without stopping)
 docker system df -v
 docker system df 
+docker rmi imageID
+docker rm containerID
+docker stop containerID
+docker start containerID
+docker attach containerID
 
 
 Docker Volumes:
