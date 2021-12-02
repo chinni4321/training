@@ -1,19 +1,29 @@
-docker run --name jenkins -p 8181:8080 -p 50000:50000 -v /var/lib/jenkins:/var/jenkins_home jenkins/jenkins:lts-jdk11
+Commands:
+-----------
+docker pull ubuntu
+docker images
+docker ps
+docker ps -a
+docker run -it --name test-container containerID
+docker run -dt --name test-conatiner conatinerID
+docker exec -it containerID /bin/bash
+docker system df -v
+docker system df 
 
 
-
-
+Docker Volumes:
+-----------------
+docker run --name jenkins -p 8181:8080 -p 50000:50000 -v /var/lib/jenkins:/var/jenkins_home jenkins/jenkins:lts-jdk1
 docker run --name jenkins -p 8080:8080 -p 50000:50000 -v test-volume:/var/jenkins_home jenkins/jenkins:lts-jdk11
 docker run -dt  —name jenkins1 -p 7070:8080 -p 40000:40000 -v test-volume:/var/jenkins_home jenkins/jenkins:lts-jdk11
 docker run --name testvolume -p 9191:8080 -p 60000:60000 -v test-volume:/var/jenkins_home jenkins/jenkins:lts-jdk11
 docker run --name testvolume -p 9191:8080 -p 60000:60000 -v /var/lib/jenkins:/var/jenkins_home jenkins/jenkins:lts-jdk11
-
 docker run --name testvolume -p 7070:8080 -p 40000:40000 -v /var/jenkins_test_path:/var/jenkins_home jenkins/jenkins:lts-jdk11
-
-
-
 docker run --name rajesh -p 8080:8080 -p 50000:50000 -v rajesh:/var/jenkins_home jenkins/jenkins:lts-jdk11
 
+
+Docker Volume Commands:
+-----------------------
 docker -v
 docker volume --help
 docker volume create test-volume
@@ -26,9 +36,9 @@ docker run --name jenkins -p 8080:8080 -p 50000:50000 -v test-volume:/var/jenkin
 docker run --name jenkins -p 9191:8080 -p 60000:60000 -v test-volume:/var/jenkins_home jenkins
 
 
--------------------------------------------------------------
 
-172.17.0.3
+Docker Networking commands:
+--------------------------------
 
 docker run -it --name=alpine1 alpine
 docker run -itd --name=alpine2 alpine
