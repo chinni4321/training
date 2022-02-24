@@ -15,6 +15,7 @@ docker rm containerID
 docker stop containerID
 docker start containerID
 docker attach containerID
+docker container ls -s (To check the size of the container)
 
 
 Docker Volumes:
