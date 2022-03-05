@@ -1,0 +1,75 @@
+pipeline {
+    agent { label 'master' }
+    
+       
+    environment {
+
+      sonar_url = 'http://172.31.38.119:9000'
+      sonar_username = 'admin'
+      sonar_password = 'admin'
+      nexus_url = '172.31.38.119:8081'
+      artifact_version = '4.0.0'
+      imagename = "664773643081.dkr.ecr.sa-east-1.amazonaws.com/batch11"
+      registryCredential = 'aws-cred'
+      dockerImage = ''
+
+ } 
+       tools {
+        jdk 'Java8'
+        maven 'Maven3.3.9'
+    }
+
+    stages { 
+      stage('Git Clone') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/chinni4321/game-of-life.git'
+
+            }
+        }
+        stage('Maven build') {
+            steps {
+                sh  'mvn clean install -U -Dmaven.test.skip=true'
+
+            }
+        }
+         stage ('Sonarqube Analysis'){
+           steps {
+           withSonarQubeEnv('sonarqube') {
+           sh '''
+           mvn -e -B sonar:sonar -Dsonar.java.source=1.8 -Dsonar.host.url="${sonar_url}" -Dsonar.login="${sonar_username}" -Dsonar.password="${sonar_password}" -Dsonar.sourceEncoding=UTF-8
+           '''
+           }
+         }
+      } 
+      stage ('Publish Artifact') {
+        steps {
+          nexusArtifactUploader artifacts: [[artifactId: 'gameoflife', classifier: '', file: "/var/lib/jenkins/workspace/pipeline/gameoflife-build/target/gameoflife-build-1.0-SNAPSHOT.jar", type: 'jar']], credentialsId: '7f46f555-b7cd-4876-b374-e7a218654c2c', groupId: 'com.wakaleo.gameoflife', nexusUrl: "${nexus_url}", nexusVersion: 'nexus3', protocol: 'http', repository: 'release', version: "${artifact_version}"
+         archiveArtifacts '**/*.jar'
+        }
+      }
+   stage('Building image') {
+    steps{
+      script {
+         dockerImage = docker.build imagename
+       }
+     }
+  }
+    stage('Deploy Image') {
+      steps{
+      script {
+        docker.withRegistry('https://664773643081.dkr.ecr.sa-east-1.amazonaws.com/batch11:aws-cred')  {
+         dockerImage.push("$BUILD_NUMBER")
+         dockerImage.push('latest')
+        }
+       }
+      }
+   }
+      stage('Remove Unused docker image') {
+        steps{
+         sh "docker rmi $imagename:$BUILD_NUMBER"
+         sh "docker rmi $imagename:latest"
+       }
+      }
+ }
+}    
