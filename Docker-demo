@@ -17,7 +17,7 @@ docker start containerID
 docker attach containerID
 docker container ls -s (To check the size of the container)
 docker rm -f $(docker ps -a -q) (To delete running containers)
-docker rmi $(docker ps -a -q) (To delete all images)
+docker rmi -f $(docker images -aq) (To delete all images)
 docker kill $(docker ps -q)
 docker stats ContainerID (To offer the statistics of a running container)
 docker pause ContainerID
