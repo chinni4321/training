@@ -18,3 +18,8 @@ sudo su - jenkins
 TO authenticate GCR please follow the below document 
 ------------------------------------------------------
 https://cloud.google.com/container-registry/docs/advanced-authentication
+
+sudo chown -R
+jenkins:jenkins /var/lib/jenkins
+
+sudo chmod 666 /var/run/docker.sock
