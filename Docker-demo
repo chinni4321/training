@@ -23,6 +23,7 @@ docker stats ContainerID (To offer the statistics of a running container)
 docker pause ContainerID
 docker unpause ContainerID
 docker kill ContainerID
+docker restart container_name
 
 
 Docker Volumes:
