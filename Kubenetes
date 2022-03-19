@@ -1,0 +1,4 @@
+kubectl create ns name
+kubectl get ns
+kubectl get pods -n dev
+kubectl get svc -n dev
