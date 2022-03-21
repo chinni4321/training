@@ -2,3 +2,15 @@ kubectl create ns name
 kubectl get ns
 kubectl get pods -n dev
 kubectl get svc -n dev
+kubectl get deploy -n dev
+kubectl delete po podName -n dev
+kubectl delete svc serviceName -n dev
+
+
+
+
+
+
+To deploy jenkinon kubernetes please follow the below link
+----------------------------------------------------------
+https://phoenixnap.com/kb/how-to-install-jenkins-kubernetes
