@@ -5,8 +5,7 @@ kubectl get svc -n dev
 kubectl get deploy -n dev
 kubectl delete po podName -n dev
 kubectl delete svc serviceName -n dev
-
-
+kubectl get all --all-namespaces -o yaml > backup     #To take the yaml backup
 
 
 
