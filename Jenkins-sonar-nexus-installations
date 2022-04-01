@@ -23,13 +23,13 @@ https://askubuntu.com/questions/512867/unable-to-install-recover-jenkins-after-u
 
 Install sonarqube
 --------------------
-wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-5.6.7.zip
+1. wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-5.6.7.zip
+2. apt-get -y install unzip
+3. sudo unzip sonarqube-5.6.7.zip -d /opt
+4. sudo mv /opt/sonarqube-5.6.7 /opt/sonarqube
+5. sudo nano /opt/sonarqube/conf/sonar.properties
 
-apt-get -y install unzip
-sudo unzip sonarqube-5.6.7.zip -d /opt
-sudo mv /opt/sonarqube-5.6.7 /opt/sonarqube
-sudo nano /opt/sonarqube/conf/sonar.properties
-uncomment
+6. uncomment
 #sonar.jdbc.username=
 #sonar.jdbc.password=
 
@@ -38,7 +38,8 @@ provide username passwd
 sonar.jdbc.username=sonar
 sonar.jdbc.password=StrongPassword
 
-nano /etc/systemd/system/sonar.service
+7. nano /etc/systemd/system/sonar.service
+# copy below content
 
 [Unit]
 Description=SonarQube service
@@ -57,10 +58,9 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 
-sudo systemctl start sonar
-
-sudo systemctl enable sonar
-sudo systemctl status sonar
+8. sudo systemctl start sonar
+9. sudo systemctl enable sonar
+10.sudo systemctl status sonar
 
 Follow the document to install sonarqube
 https://www.vultr.com/docs/how-to-install-sonarqube-on-ubuntu-16-04
