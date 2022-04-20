@@ -73,10 +73,10 @@ Install nexus
 1) wget http://download.sonatype.com/nexus/3/nexus-3.22.0-02-unix.tar.gz
 2) sudo tar -xvf nexus-3.22.0-02-unix.tar.gz 
 3) mv nexus-3.22.0-02 /opt/
-4) cd /opt
-5) mv sonatype-work/ /opt/
+4) mv sonatype-work/ /opt/
+5) cd /opt
 6) mv nexus-3.22.0-02/ nexus
-7) Create a user called Nexus
+7) ###Create a user called Nexus####
      sudo adduser nexus
 
 8) Give permission to Nexus user
