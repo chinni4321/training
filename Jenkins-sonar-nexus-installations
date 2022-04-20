@@ -73,23 +73,24 @@ Install nexus
 1) wget http://download.sonatype.com/nexus/3/nexus-3.22.0-02-unix.tar.gz
 2) sudo tar -xvf nexus-3.22.0-02-unix.tar.gz 
 3) mv nexus-3.22.0-02 /opt/
-4) mv sonatype-work/ /opt/
-5) mv nexus-3.22.0-02/ nexus
-6) Create a user called Nexus
+4) cd /opt
+5) mv sonatype-work/ /opt/
+6) mv nexus-3.22.0-02/ nexus
+7) Create a user called Nexus
      sudo adduser nexus
 
-7) Give permission to Nexus user
+8) Give permission to Nexus user
 sudo chown -R nexus:nexus /opt/nexus
 sudo chown -R nexus:nexus /opt/sonatype-work
 
-8) sudo vim /opt/nexus/bin/nexus.rc
+9) sudo vim /opt/nexus/bin/nexus.rc
     run_as_user="nexus"
  
-9)Modify memory settings
+10)Modify memory settings
   sudo vim /opt/nexus/bin/nexus.vmoptions
   change to 512m
 
-10) Configure Nexus to run as a service
+11) Configure Nexus to run as a service
       sudo vim /etc/systemd/system/nexus.service
        Copy the below content.
        
@@ -108,12 +109,12 @@ Restart=on-abort
 [Install]
 WantedBy=multi-user.target
 
-11) Now Start Nexus
+12) Now Start Nexus
      sudo systemctl enable nexus
      sudo systemctl start nexus
      sudo systemctl status nexus
 
-12) tail -f /opt/sonatype-work/nexus3/log/nexus.log
+13) tail -f /opt/sonatype-work/nexus3/log/nexus.log
 
 https://epma.medium.com/install-sonatype-nexus-3-on-ubuntu-20-04-lts-562f8ba20b98
 
