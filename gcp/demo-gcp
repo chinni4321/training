@@ -2,3 +2,18 @@ Secrets:
 --------
 
 kubectl create secret docker-registry <name> --docker-server=DOCKER_REGISTRY_SERVER --docker-username=DOCKER_USER --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL
+
+ConfigMaps:
+-----------
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: game-demo
+data:
+  # property-like keys; each key maps to a simple value
+  docker-server: "https://hub.docker.com/"
+  docker-username: "chinniprashanthsahul"
+  docker-password: " "
+  docker-email: "chinniprashanth13@gmail.com"
+  
