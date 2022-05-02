@@ -1,0 +1,42 @@
+###Link: https://www.howtoforge.com/use-node-selectors-in-kubernetes/
+
+SO, to restrict the scheduling and to make sure pods get places on the master node only, let's create a label on the master node.
+
+kubectl label nodes master on-master=true #Create a label on the master node
+kubectl describe node master #Get more details regarding the master node
+add-label-to-master-nodes
+
+In the above screenshot, it can be seen that the master node has a label to it as "on-master=true"
+
+Now, let's create a new deployment with nodeSelector:on-master=true in it to make sure that the Pods get deployed on the master node only.
+
+vim my-deployment-with-node-selector.yaml #Create a deployment definition file 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamer-v4-deployment
+  labels:
+    app: streamer-v4
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: streamer-v4
+  template:
+    metadata:
+      labels:
+        app: streamer-v4
+    spec:
+      containers:
+      - name: streamer-v4
+        image: nginx
+        ports:
+        - containerPort: 8880
+      nodeSelector:
+        on-master: "true"
+deployment-with-node-selector
+
+A new deployment with nodeSelector can now be created with the following command.
+
+kubectl create -f my-deployment-with-node-selector.yaml #Create a deployment
+kubectl get pods -o wide | grep streamer-v4-deployment #Get more details of the pods
