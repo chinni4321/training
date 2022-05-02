@@ -1,0 +1,41 @@
+Concepts
+You add a taint to a node using kubectl taint. For example,
+
+### https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/ 
+
+
+kubectl taint nodes node1 key1=value1:NoSchedule
+places a taint on node node1. The taint has key key1, value value1, and taint effect NoSchedule. This means that no pod will be able to schedule onto node1 unless it has a matching toleration.
+
+To remove the taint added by the command above, you can run:
+
+kubectl taint nodes node1 key1=value1:NoSchedule-
+You specify a toleration for a pod in the PodSpec. Both of the following tolerations "match" the taint created by the kubectl taint line above, and thus a pod with either toleration would be able to schedule onto node1:
+
+tolerations:
+- key: "key1"
+  operator: "Equal"
+  value: "value1"
+  effect: "NoSchedule"
+tolerations:
+- key: "key1"
+  operator: "Exists"
+  effect: "NoSchedule"
+Here's an example of a pod that uses tolerations:
+
+pods/pod-with-toleration.yaml Copy pods/pod-with-toleration.yaml to clipboard
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  tolerations:
+  - key: "example-key"
+    operator: "Exists"
+    effect: "NoSchedule"
