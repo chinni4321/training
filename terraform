@@ -1,0 +1,47 @@
+Install terraform https://www.ntweekly.com/2021/09/15/upgrade-terraform-on-ubuntu-linux/
+
+Create service account: https://blog.avenuecode.com/how-to-use-terraform-to-create-a-virtual-machine-in-google-cloud-platform
+--------------------------------------------------------------------------------------------------------------------------------
+
+create provider.tf file
+---------------------------
+
+provider "google" {
+ credentials = file("credentials.json")
+ project     = "ferrous-syntax-348017"
+ region      = "us-central1-a"
+}
+
+create main.tf 
+-------------------
+
+# Create a single Compute Engine instance
+resource "google_compute_instance" "default" {
+  name         = "terraform-vm"
+  machine_type = "f1-micro"
+  zone         = "us-central1-a"
+  tags         = ["ssh"]
+
+  metadata = {
+    enable-oslogin = "TRUE"
+  }
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+
+  # Install Flask
+  metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python-pip rsync; pip install flask"
+
+  network_interface {
+    network = "default"
+
+    access_config {
+      # Include this section to give the VM an external IP address
+    }
+  }
+
+
+
+Reference document: https://cloud.google.com/docs/terraform/get-started-with-terraform
