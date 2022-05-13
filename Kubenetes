@@ -8,8 +8,735 @@ kubectl delete svc serviceName -n dev
 kubectl get all --all-namespaces -o yaml > backup     #To take the yaml backup
 
 
+kubectl run nginx-pod --image=nginx:alpine
+kubectl run redis --image=redis:alpine -l tier=db
+kubectl expose pod redis --port=6379 --name redis-service
+kubectl create deployment webapp --image=kodekloud/webapp-color
+kubectl scale deployment/webapp --replicas=3
+kubectl create deployment redis-deploy --image redis --namespace=dev-ns --dry-run=client -o yaml > deploy.yaml
+kubectl apply -f deploy.yaml -n dev-ns
+kubectl scale deployment/redis-deploy --replicas=2 -n dev-ns
+kubectl run httpd --image=httpd:alpine --port=80 —expose
+kubectl get po --selector env= dev
+kubectl get pods --selector bu=finance
+kubectl get all --selector env=prod
+
+kubectl label nodes node01 color=blue
+kubectl autoscale deployment.v1.apps/nginx-deployment —min=10 —max=15 —cpu-percent=80
+kubectl set image deployment/frontend mycontainer=myimage
+kubectl roullout update deployment frontend
+kubectl roullout update deployment frontend —record
+kubectl roullout history deployment frontend
+kubectl roullout undo deployment frontend
 
 
-To deploy jenkinon kubernetes please follow the below link
+
+kubectl drain node01 --ignore-daemonsets
+kubectl drain node02 --ignore-daemonsets —force
+kubectl cordon node03
+kubectl uncordon node03
+
+
+
+To upgrade the version
+
+-------------------------
+
+Kubeadm upgrade plan
+Kubeadm upgrade apply
+
+
+
+To create the static pods 
+
+---------------------------
+
+kubectl run --restart=Never --image=busybox static-busybox --dry-run -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+
+
+
+To deploy jenkins on kubernetes please follow the below link
 ----------------------------------------------------------
 https://phoenixnap.com/kb/how-to-install-jenkins-kubernetes
+
+Interview questions (CKA)
+1.Etcd backup & restore
+2. Master upgrade version
+3.Node01 unschedule and reschedule all pods to the node01
+4. Create a service account and cluster role and binding in the namespace
+5. Create a pvc attached to the pod
+6. Create a pod 
+7. Multi image pod 
+8. Add the port 80 and http
+9. Side car add the command in the deployment
+10. Troubleshoot the node and make it ready
+11. netpol to allow incoming connection to all pods in some namespace on  port 9200 from some namespce
+12. ingress hello
+13. Send nodes high cpu usage to /file/path
+14. Send the un Tained nodes to /file/path
+
+
+
+
+
+------------------------------------------------------------------------------------
+
+
+
+
+
+
+To find the all control plain yalms path
+
+------------------------------------------
+
+/etc/systemd/system/kubelet.service.d/
+
+
+
+/etc/kubernetes/manifest
+
+
+
+netstat -natulp | grep 10247
+
+
+
+Secrets:
+
+————
+
+kubectl create secret generic db-secret --from-literal=DB_Host=sql01 --from-literal=DB_User=root --from-literal=DB_Password=password123
+
+
+
+Backup:
+
+—————
+
+kubectl get all —all-namespaces -o yaml > backup.yaml
+
+
+
+Upgrade version:
+
+——————————
+
+Master Node:
+
+------
+
+kubeadm upgrade plan
+
+kubectl drain master --ignore-daemonsets
+
+apt install kubeadm=1.18.0-00
+
+kubectl uncordon master
+
+Worker Node:
+
+————
+
+kubectl drain node01 --ignore-daemonsets
+
+apt-get install kubeadm=1.18.0-00
+
+kubeadm apply v1.18.0
+
+apt install kubelet=1.8.0-00   or apt-get upgrade kubelet
+
+kubectl uncordon node01 
+
+
+
+etcd backup and restore:
+
+—————————
+
+etcdctl is a command line client for etcd.
+
+export ETCDCTL_API=3 etcdctl snapshot save -h
+
+etcdctl snapshot save —cacert   —cert   —key  —endpoints <file-name>
+
+To check the above command working or not 
+
+etcdctl snapshot member list  —cacert   —cert   —key  —endpoints
+
+
+
+ETCDCTL_API=3 etcdctl restore save -h
+
+etcdctl snapshot restore —cacert   —cert   —key  —endpoints —data-dir="/var/lib/etcd-from-backup" —initial-cluster="master=http://127.0.0.1:2380 —name="master" —initial-advertise —initial-cluster-token <file-name>
+
+
+
+To check the etcd version :  k logs etcd-master -n kube-system
+
+kubectl describe pod etcd-master -n kube-system
+
+Server certificate location : /etc/kubernetes/pki/etcd/server.crt
+
+Server certificate file location : /etc/kubernetes/pki/etcd/ca.crt
+
+
+
+https://github.com/mmumshad/kubernetes-the-hard-way/blob/master/practice-questions-answers/cluster-maintenance/backup-etcd/etcd-backup-and-restore.md
+
+
+
+To take the etcd snapshot
+
+ETCDCTL_API=3 etcdctl --endpoints=https://[127.0.0.1]:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+
+     --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key \
+
+     snapshot save /tmp/snapshot-pre-boot.db
+
+Certificate:
+
+——————
+
+https://github.com/mmumshad/kubernetes-the-hard-way/tree/master/tools
+
+
+
+Note: If node is not upgraded then use apt-mark hold kubeadm
+
+-------------------
+
+apiVersion: v1
+
+kind: Pod
+
+metadata:
+
+  name: app
+
+  namespace: elastic-stack
+
+  labels:
+
+    name: app
+
+spec:
+
+  containers:
+
+  - name: app
+
+    image: kodekloud/event-simulator
+
+    volumeMounts:
+
+    - mountPath: /log
+
+      name: log-volume
+
+
+
+  - name: sidecar
+
+    image: kodekloud/filebeat-configured
+
+    volumeMounts:
+
+    - mountPath: /var/log/event-simulator/
+
+      name: log-volume
+
+
+
+  volumes:
+
+  - name: log-volume
+
+    hostPath:
+
+      # directory location on host
+
+      path: /var/log/webapp
+
+      # this field is optional
+
+      type: DirectoryOrCreate
+
+——————————————————————
+
+Openssl genrsa -out  akshay.key 2048
+
+Openssl req -new -key akshay.key -subj \ "/CN=kube-admin" -out akshay.csr
+
+openssl  x509 -req -in akshay.csr -CA ca.crt -CAkey ca.key -out akshay.crt 
+
+
+
+apiVersion: certificates.k8s.io/v1beta1
+
+kind: CertificateSigningRequest
+
+metadata:
+
+  name: akshay
+
+spec:
+
+  groups:
+
+  - system:authenticated
+
+  request: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQ1ZqQ0NBVDRDQVFBd0VURVBNQTBHQTFVRUF3d0dZV3R6YUdGNU1JSUJJakFOQmdrcWhraUc5dzBCQVFFRgpBQU9DQVE4QU1JSUJDZ0tDQVFFQTg0TmRGYWl2M0tzNExNeW1qM2VYbHFYWFh3Y2h1aXNseDZTcTlWeXdLMGR0CnJnWFhuYi9sYndFM1VBMWRPTDIvczNUT2laNHN5YWk0YmV4ZWtxMmhTeFJLNm9DVitpbmRmTjFGZ2ZaeTRBOTMKb1g4Q0JIQmFiZjl3ZU9vR1AwSG1MOTkyLzRRMkFoRVFtUkliTXhJY3ROZGhEbzU0dkFPRmROYmdvN29VSnlxMQpRczF5UnBGRnppMTh0dDlmYndySUV5N01GT0dtU3ZsTnFVaWMrcU8wUVdxYzZOdmRIZFlydXBIV25KcDRzNS9IClUyYlZPNmxzTi9IRFY2citNT25OR213WDVKR2g1eWt1ZXY5YWdaOUszcjYyS09La2Z3TGhyNVpNYmdPRDcxdUUKZnNUZTRkTm5JVkZxZ0dMT3NjL3hWK1ZYWWtXR0c3MkRTbXJJN2xncFZ3SURBUUFCb0FBd0RRWUpLb1pJaHZjTgpBUUVMQlFBRGdnRUJBQ25udVRsQzFLRTRpTi9lMFJYdlFCUTFYeHdyUUtuQjQ3ZVBqQmFxV0xQcGkrQ2ZJZVl3CjJRQ3ROcGd1WGVvZjFzUFdId1gwS3dZcjZ2dVUyRURtSHp2U1RtTk5DM2FUbHpvVUprZEpIT1N3UG1FM3o3QncKVVI1M2dJT0svK2pVNjh6eXE5K1FSSDdzbDFlYWxEclZsbjMvSFRJTXp4RENZdlhsSDhwdzhxcXRONGVvcTlQOAoxWDFsZks5ZDF3QnhxVUR2M0g1SlBKaXNWUEY5ekJLajFrRDFKNTI3TmwvVUVzaFQvd3lHdVZpRUlCRkUrQnRPCmFmTlBoNzN4ak5YVmNMOGFrNXFacEluQ3RRLzlCWDJKQlpUbGNxb2MvNmMvNkw5M0JmcTdmR3JqSUlFTXlrTTAKemQwenM3Yk80NlN6U2Q1WER3eHBnOFY4OVRyWndIdU5iWkk9Ci0tLS0tRU5EIENFUlRJRklDQVRFIFJFUVVFU1QtLS0tLQo=
+
+  usages:
+
+  - digital signature
+
+  - key encipherment
+
+  - server auth
+
+
+
+
+
+kubectl get csr
+
+
+
+kubectl certificate approve akshay
+
+kubectl get csr agent-smith -o yaml
+
+kubectl certificate deny agent-smith
+
+kubectl delete csr agent-smith
+
+
+
+Kubectl config view
+
+Kubectl config view —Kubernetesconfig=my-custom-config
+
+Kubectl config use-context prod-user@production
+
+Kubectl config -h
+
+Kubeconfig location path = 
+
+
+
+
+
+
+
+—————————————————————————
+
+master $ kubectl config view --kubeconfig my-kube-config
+
+
+
+apiVersion: v1
+
+clusters:
+
+- cluster:
+
+    certificate-authority: /etc/kubernetes/pki/ca.crt
+
+    server: https://172.17.0.53:6443
+
+  name: development
+
+- cluster:
+
+    certificate-authority: /etc/kubernetes/pki/ca.crt    server: https://172.17.0.53:6443
+
+  name: kubernetes-on-aws
+
+- cluster:
+
+    certificate-authority: /etc/kubernetes/pki/ca.crt
+
+    server: https://172.17.0.53:6443
+
+  name: production
+
+- cluster:
+
+    certificate-authority: /etc/kubernetes/pki/ca.crt
+
+    server: https://172.17.0.53:6443
+
+  name: test-cluster-1
+
+contexts:
+
+- context:
+
+    cluster: kubernetes-on-aws
+
+    user: aws-user
+
+  name: aws-user@kubernetes-on-aws
+
+- context:
+
+    cluster: test-cluster-1
+
+    user: dev-user
+
+  name: research
+
+- context:
+
+    cluster: development
+
+    user: test-user
+
+  name: test-user@development
+
+- context:
+
+    cluster: production
+
+    user: test-user
+
+  name: test-user@production
+
+current-context: test-user@development
+
+kind: Config
+
+preferences: {}
+
+users:
+
+- name: aws-user
+
+  user:
+
+    client-certificate: /etc/kubernetes/pki/users/aws-user/aws-user.crt
+
+    client-key: /etc/kubernetes/pki/users/aws-user/aws-user.key
+
+- name: dev-user
+
+  user:
+
+    client-certificate: /etc/kubernetes/pki/users/dev-user/developer-user.crt
+
+    client-key: /etc/kubernetes/pki/users/dev-user/dev-user.key
+
+- name: test-user
+
+  user:
+
+    client-certificate: /etc/kubernetes/pki/users/test-user/test-user.crt
+
+    client-key: /etc/kubernetes/pki/users/test-user/test-user.key
+
+
+
+
+
+kubectl config --kubeconfig=/root/my-kube-config use-context research
+
+
+
+
+
+kubectl describe pod kube-apiserver-master -n kube-system
+
+kubectl get roles
+
+kubectl get roles --all-namespaces
+
+kubectl describe role kube-proxy -n kube-system
+
+kubectl describe rolebinding kube-proxy -n kube-system
+
+kubectl get pods --as dev-user
+
+
+
+
+
+kind: Role
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  namespace: default
+
+  name: developer
+
+rules:
+
+- apiGroups: [""]
+
+  resources: ["pods"]
+
+  verbs: ["list", "create"]
+
+
+
+
+
+---
+
+kind: RoleBinding
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  name: dev-user-binding
+
+subjects:
+
+- kind: User
+
+  name: dev-user
+
+  apiGroup: rbac.authorization.k8s.io
+
+roleRef:
+
+  kind: Role
+
+  name: developer
+
+  apiGroup: rbac.authorization.k8s.io
+
+
+
+—————————————————
+
+master $ cat /var/answers/dev-user-deploy.yaml
+
+---
+
+kind: Role
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  namespace: blue
+
+  name: deploy-role
+
+rules:
+
+- apiGroups: ["apps", "extensions"]
+
+  resources: ["deployments"]
+
+  verbs: ["create"]
+
+
+
+---
+
+kind: RoleBinding
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  name: dev-user-deploy-binding
+
+  namespace: blue
+
+subjects:
+
+- kind: User
+
+  name: dev-user
+
+  apiGroup: rbac.authorization.k8s.io
+
+roleRef:
+
+  kind: Role
+
+  name: deploy-role
+
+  apiGroup: rbac.authorization.k8s.io
+
+——————————————————————————
+
+kubectl get clusterroles --no-headers | wc -l
+
+kubectl get clusterrolebindings --no-headers | wc -l
+
+kubectl describe clusterrolebinding cluster-admin
+
+kubectl describe clusterrole cluster-admin
+
+
+
+michelle-node-admin.yaml  michelle-storage-admin.yaml
+
+master $ cat michelle-node-admin.yaml
+
+---
+
+kind: ClusterRole
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  name: node-admin
+
+rules:
+
+- apiGroups: [""]
+
+  resources: ["nodes"]
+
+  verbs: ["get", "watch", "list", "create", "delete"]
+
+
+
+---
+
+kind: ClusterRoleBinding
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  name: michelle-binding
+
+subjects:
+
+- kind: User
+
+  name: michelle
+
+  apiGroup: rbac.authorization.k8s.io
+
+roleRef:
+
+  kind: ClusterRole
+
+  name: node-admin
+
+  apiGroup: rbac.authorization.k8s.io
+
+———————————————————
+
+master $ cat michelle-storage-admin.yaml
+
+---
+
+kind: ClusterRole
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  name: storage-admin
+
+rules:
+
+- apiGroups: [""]
+
+  resources: ["persistentvolumes"]
+
+  verbs: ["get", "watch", "list", "create", "delete"]
+
+- apiGroups: ["storage.k8s.io"]
+
+  resources: ["storageclasses"]
+
+  verbs: ["get", "watch", "list", "create", "delete"]
+
+
+
+---
+
+kind: ClusterRoleBinding
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+
+  name: michelle-storage-admin
+
+subjects:
+
+- kind: User
+
+  name: michelle
+
+  apiGroup: rbac.authorization.k8s.io
+
+roleRef:
+
+  kind: ClusterRole
+
+  name: storage-admin
+
+  apiGroup: rbac.authorization.k8s.io
+
+————————————————————————
+
+kubectl create secret docker-registry private-reg-cred --docker-username=dock_user --docker-password=dock_password --docker-server=myprivateregistry.com:5000 --docker-email=dock_user@myprivateregistry.com
+
+
+
+
+
+——————————————————————————————
+
+Ip adds
+
+Ip nets
+
+Ip link
+
+Iptables -nvL -t nat
+
+ip link show ens3
+
+arp node01   —> to find the network mask
+
+ip link show docker0
+
+ip route show default
+
+netstat -nplt
+
+netstat -anp | grep etcd
+
+
+
+
+
+——————————————————————————
+
+https://www.weave.works/docs/net/latest/kubernetes/kube-addon/
+
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+Ip addr show weave
+
+Ip link
+
+cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep cluster-ip-range
+
+
+
+———————————————————————————
+
+kubectl get deploy -n kube-system
+
+kubectl get service -n kube-system
+
+kubectl -n kube-system describe deployments.apps coredns | grep -A2 Args | grep Corefile
+
