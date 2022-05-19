@@ -24,8 +24,24 @@ then apply it by executing :
 
 Refrence: http://javedmandary.blogspot.com/2016/09/install-maven-339-on-ubuntu.html
 ----------------------------------------------------------------------------------------
+
 Install jenkins 
 -------------------
+
+To install Jenkins on Ubuntu, follow below set of commands:
+
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | 
+  sudo apt-key add -
+
+sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > \
+/etc/apt/sources.list.d/jenkins.list'
+
+sudo apt-get update
+sudo apt-get install jenkins
+sudo service jenkins start
+sudo service jenkins status
+
+
 follow this document to install jenkins
 https://www.liquidweb.com/kb/installing-jenkins-on-ubuntu-16-04/ 
 
