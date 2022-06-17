@@ -19,3 +19,7 @@ git remote
 git push
 git pull
 git stash
+git chechout .    (To revert the changes from working dir)
+git reset HEAD~1  (To revert the changes)
+git reset --mixed HEAD~1 (To revert the changes from local to working dir)
+git reset --soft HEAD~1 (To revert the changes from local to staging/index)
