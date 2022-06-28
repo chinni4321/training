@@ -55,6 +55,8 @@ https://askubuntu.com/questions/512867/unable-to-install-recover-jenkins-after-u
 
 Install sonarqube
 --------------------
+Sonarqube9+ version: https://www.vultr.com/docs/install-sonarqube-on-ubuntu-20-04-lts/?utm_source=performance-max-apac&utm_medium=paidmedia&obility_id=16876059738&utm_adgroup=&utm_campaign=&utm_term=&utm_content=&gclid=CjwKCAjwquWVBhBrEiwAt1KmwhlFG8F9rDlwwpWj_k1_lf0860NnAq0qXKGGkbsAQhy5TBMpTEvOjBoCoUkQAvD_BwE
+
 1. wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-5.6.7.zip
 2. apt-get -y install unzip
 3. sudo unzip sonarqube-5.6.7.zip -d /opt
