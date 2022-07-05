@@ -1,6 +1,20 @@
 GCR configurations :
 ---------------------
 https://cloud.google.com/container-registry/docs/advanced-authentication
+root@master:~# history
+   14  sudo su - jenkins
+    3  sudo chown -R jenkins:jenkins /var/lib/jenkins
+    4  sudo chmod 666 /var/run/docker.sock
+    5  sudo usermod -a -G docker jenkins
+    6  sudo usermod -a -G docker ubuntu
+    7  gcloud auth login
+    8  vi cred.json
+    9  ls
+   10  gcloud auth activate-service-account demo14@able-decorator-354310.iam.gserviceaccount.com --key-file=cred.json
+   11  gcloud auth configure-docker
+   12  ls
+   13  cat cred.json 
+  
 
 
 pipeline {
