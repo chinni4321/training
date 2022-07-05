@@ -1,3 +1,8 @@
+GCR configurations :
+---------------------
+https://cloud.google.com/container-registry/docs/advanced-authentication
+
+
 pipeline {
   agent any
 
