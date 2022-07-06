@@ -52,7 +52,7 @@ docker run --name jenkins -p 8080:8080 -p 50000:50000 -v test-volume:/var/jenkin
 
 docker run --name jenkins -p 9191:8080 -p 60000:60000 -v test-volume:/var/jenkins_home jenkins
 
-docker run --name jenkins -p 8181:8080 -p 40000:40000 -v /var/jenkins/jenkins:/var/jenkins_home jenkins/jenkins
+docker run --name jenkins -p 8181:8080 -p 40000:40000 -v /var/lib/jenkins:/var/jenkins_home jenkins/jenkins
 sudo chown -R 1000:1000 /var/lib/jenkins/
 
 Docker Networking commands:
