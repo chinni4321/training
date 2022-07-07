@@ -58,7 +58,7 @@ sudo chown -R 1000:1000 /var/lib/jenkins/
 Docker Networking commands:
 --------------------------------
 
-docker run -it --name=alpine1 alpine
+docker run -itd --name=alpine1 alpine
 docker run -itd --name=alpine2 alpine
 docker network inspect bridge
 docker network create --driver=bridge chinni
