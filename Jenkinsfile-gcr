@@ -2,7 +2,9 @@ GCR configurations :
 ---------------------
 https://cloud.google.com/container-registry/docs/advanced-authentication
 root@master:~# history
-   14  sudo su - jenkins
+     vi /etc/sudoers
+     jenkins ALL=(ALL) NOPASSWD: ALL
+    1  sudo su - jenkins
     3  sudo chown -R jenkins:jenkins /var/lib/jenkins
     4  sudo chmod 666 /var/run/docker.sock
     5  sudo usermod -a -G docker jenkins
