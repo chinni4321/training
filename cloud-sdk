@@ -13,6 +13,7 @@ sudo su - jenkins
 5) sudo apt-get install google-cloud-cli-app-engine-java
 6) gcloud init
 7) sudo apt-get update && sudo apt-get install google-cloud-cli=123.0.0-0
+8) sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 
 
 TO authenticate GCR please follow the below document 
