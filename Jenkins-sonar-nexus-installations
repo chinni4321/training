@@ -101,7 +101,43 @@ WantedBy=multi-user.target
 Follow the document to install sonarqube
 https://www.vultr.com/docs/how-to-install-sonarqube-on-ubuntu-16-04
 
+Sonarqube-9v installation steps:
+--------------------------------
+wget wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.0.1.46107.zip
+ls
+sudo apt -y install unzip
+sudo unzip sonarqube-*.zip -d /opt
+sudo mv /opt/sonarqube-* /opt/sonarqube
+sudo adduser --system --no-create-home --group --disabled-login sonarh2s
+sudo chown -R sonarh2s:sonarh2s /opt/sonarqube
+sudo nano /opt/sonarqube/conf/sonar.properties
+       uncomment and update username and password
+#sonar.jdbc.username=
+#sonar.jdbc.password=
 
+sudo nano /etc/systemd/system/sonar.service
+     add below script in the sonar.service file
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+User=root
+Group=root
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+sudo systemctl daemon-reload
+sudo systemctl enable sonar 
+sudo systemctl start sonar
+sudo systemctl status sonar
 
 Install nexus
 ------------------
