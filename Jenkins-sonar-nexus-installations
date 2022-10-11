@@ -59,63 +59,38 @@ Sonarqube9+ version: https://www.vultr.com/docs/install-sonarqube-on-ubuntu-20-0
 https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.5.0.56709.zip
 
 
-1. wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-5.6.7.zip
-2. apt-get -y install unzip
-3. sudo unzip sonarqube-5.6.7.zip -d /opt
-4. sudo mv /opt/sonarqube-5.6.7 /opt/sonarqube
-5. sudo nano /opt/sonarqube/conf/sonar.properties
-
-6. uncomment
-#sonar.jdbc.username=
-#sonar.jdbc.password=
-
-provide username passwd
-
-sonar.jdbc.username=sonar
-sonar.jdbc.password=StrongPassword
-
-7. nano /etc/systemd/system/sonar.service
-# copy below content
-
-[Unit]
-Description=SonarQube service
-After=syslog.target network.target
-
-[Service]
-Type=forking
-
-ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
-ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
-
-User=root
-Group=root
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-
-8. sudo systemctl start sonar
-9. sudo systemctl enable sonar
-10.sudo systemctl status sonar
-
 Follow the document to install sonarqube
 https://www.vultr.com/docs/how-to-install-sonarqube-on-ubuntu-16-04
 
 Sonarqube-9v installation steps:
 --------------------------------
-wget wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.0.1.46107.zip
+1. wget wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.0.1.46107.zip
 ls
-sudo apt -y install unzip
-sudo unzip sonarqube-*.zip -d /opt
-sudo mv /opt/sonarqube-* /opt/sonarqube
-sudo adduser --system --no-create-home --group --disabled-login sonarh2s
-sudo chown -R sonarh2s:sonarh2s /opt/sonarqube
-sudo nano /opt/sonarqube/conf/sonar.properties
+2. sudo apt -y install unzip
+3. sudo unzip sonarqube-*.zip -d /opt
+4. sudo mv /opt/sonarqube-* /opt/sonarqube
+
+5. sudo groupadd sonar
+6. sudo useradd -d /opt/sonarqube -g sonar sonar
+7. sudo chown sonar:sonar /opt/sonarqube -R
+
+8. sudo nano /opt/sonarqube/conf/sonar.properties
        uncomment and update username and password
 #sonar.jdbc.username=
 #sonar.jdbc.password=
 
-sudo nano /etc/systemd/system/sonar.service
+9. Edit the sonar script file.
+
+$ sudo nano /opt/sonarqube/bin/linux-x86-64/sonar.sh
+About 50 lines down, locate this line:
+
+#RUN_AS_USER=
+Uncomment the line and change it to:
+
+RUN_AS_USER=sonar
+
+
+10. sudo nano /etc/systemd/system/sonar.service
      add below script in the sonar.service file
 [Unit]
 Description=SonarQube service
@@ -134,10 +109,10 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 
-sudo systemctl daemon-reload
-sudo systemctl enable sonar 
-sudo systemctl start sonar
-sudo systemctl status sonar
+11. sudo systemctl daemon-reload
+12. sudo systemctl enable sonar 
+13. sudo systemctl start sonar
+14. sudo systemctl status sonar
 
 Install nexus
 ------------------
