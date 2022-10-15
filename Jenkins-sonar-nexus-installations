@@ -80,9 +80,10 @@ ls
 #sonar.jdbc.password=
 
 9. Edit the sonar script file.
+-----------------------------------
 
 $ sudo nano /opt/sonarqube/bin/linux-x86-64/sonar.sh
-About 50 lines down, locate this line:
+###About 50 lines down, locate this line:####
 
 #RUN_AS_USER=
 Uncomment the line and change it to:
