@@ -6,20 +6,44 @@ https://digitalavenue.dev/Install-SonarQube-On-Ubuntu-Debian/
   sudo apt-get install unzip
   sudo unzip sonarqube-8.3.0.34182.zip -d /opt/
   sudo mv /opt/sonarqube-8.3.0.34182/ /opt/sonarqube
-
-  cd sonarqube/
-
-  cd sonarqube-8.3.0.34182/
-  mv * /opt/sonarqube/
-  cd ..
-  ls
-  rm -rf sonarqube-8.3.0.34182 sonarqube-8.3.0.34182.zip 
-  ls
+  cd /opt/sonarqube/
   sudo groupadd sonar
   sudo useradd -c "SonarQube - User" -d /opt/sonarqube/ -g sonar sonar
   sudo chown sonar:sonar /opt/sonarqube/ -R
+  
   sudo vim /opt/sonarqube/conf/sonar.properties
+  
+  ####Un-comment these lines and modify them as necessary.
+
+   sonar.jdbc.username=admin
+   sonar.jdbc.password=admin
+
   vim /etc/systemd/system/sonarqube.service
+  
+  ####Add this content into the “sonarqube.service” file.
+
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+User=sonar
+Group=sonar
+Restart=always
+
+LimitNOFILE=65536
+LimitNPROC=4096
+
+
+[Install]
+WantedBy=multi-user.target
+
+
   systemctl daemon-reload 
   systemctl enable sonarqube.service
   systemctl start sonarqube.service
