@@ -1,14 +1,9 @@
 https://digitalavenue.dev/Install-SonarQube-On-Ubuntu-Debian/
 
 
-cd /opt
-  ls
-  mkdir sonarqube
-  ls
-  cd sonarqube/
-  ls
+  cd /opt
   sudo curl -O https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.3.0.34182.zip
-  sudo apt-get install zip
+  sudo apt-get install unzip
   sudo unzip sonarqube-8.3.0.34182.zip -d /opt/
   sudo mv /opt/sonarqube-8.3.0.34182/ /opt/sonarqube
 
