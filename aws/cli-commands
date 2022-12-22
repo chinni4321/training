@@ -1,0 +1,8 @@
+ aws ec2 describe-instances
+ aws ec2 describe-instances | grep InstanceId
+ aws ec2 describe-instances --filters "Name=tag:Name,Values=master"
+ aws ec2 start-instances --instance-ids i-02151c9b8977651cc
+ aws ec2 run-instances --image-id ami-0b5eea76982371e91 --count 1 --instance-type t2.micro --key-name batch19 --security-group-ids sg-088d1a470b7367e24 --subnet-id subnet-035b4a408c2ff2d7a
+ aws ec2 create-tags     --resources ami-0b5eea76982371e91 i-0aa5c548b199c38b2     --tags Key=Name,Value=awscli
+ aws ec2 stop-instances --instance-ids i-02151c9b8977651cc
+ aws ec2 stop-instances --instance-ids i-0aa5c548b199c38b2
