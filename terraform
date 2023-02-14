@@ -41,7 +41,7 @@ resource "google_compute_instance" "default" {
       # Include this section to give the VM an external IP address
     }
   }
-
+}
 
 
 Reference document: https://cloud.google.com/docs/terraform/get-started-with-terraform
