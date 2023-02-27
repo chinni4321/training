@@ -1,11 +1,15 @@
 # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w1ab2c21c45c15c15
 # Amazon EC2 instance in a security group Creates an Amazon EC2 instance in an Amazon EC2 security group.
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w2ab1c35c58c13c17
+
+
+
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   AWS CloudFormation Sample Template EC2InstanceWithSecurityGroupSample: Create
   an Amazon EC2 instance running the Amazon Linux AMI. The AMI is chosen based
   on the region in which the stack is run. This example creates an EC2 security
-  group for the instance to give you SSH access. **WARNING** This template
+  group for the instance to give you SSH access. *WARNING* This template
   creates an Amazon EC2 instance. You will be billed for the AWS resources used
   if you create a stack from this template.
 Parameters:
@@ -78,13 +82,7 @@ Resources:
       SecurityGroups:
         - !Ref InstanceSecurityGroup
       KeyName: !Ref KeyName
-      ImageId: !FindInMap 
-        - AWSRegionArch2AMI
-        - !Ref 'AWS::Region'
-        - !FindInMap 
-          - AWSInstanceType2Arch
-          - !Ref InstanceType
-          - Arch
+      ImageId: ami-00eeedc4036573771
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
