@@ -53,46 +53,33 @@ GCP to install jenkins:
 https://askubuntu.com/questions/512867/unable-to-install-recover-jenkins-after-upgrading-from-ubuntu-12-04-to-14-04
 
 
-Install sonarqube
+Sonarqube install:
 --------------------
-Sonarqube9+ version: https://www.vultr.com/docs/install-sonarqube-on-ubuntu-20-04-lts/?utm_source=performance-max-apac&utm_medium=paidmedia&obility_id=16876059738&utm_adgroup=&utm_campaign=&utm_term=&utm_content=&gclid=CjwKCAjwquWVBhBrEiwAt1KmwhlFG8F9rDlwwpWj_k1_lf0860NnAq0qXKGGkbsAQhy5TBMpTEvOjBoCoUkQAvD_BwE
-https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.5.0.56709.zip
+
+https://digitalavenue.dev/Install-SonarQube-On-Ubuntu-Debian/
 
 
-Follow the document to install sonarqube
-https://www.vultr.com/docs/how-to-install-sonarqube-on-ubuntu-16-04
+  cd /opt
+  sudo curl -O https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.3.0.34182.zip
+  sudo apt-get install unzip
+  sudo unzip sonarqube-8.3.0.34182.zip -d /opt/
+  sudo mv /opt/sonarqube-8.3.0.34182/ /opt/sonarqube
+  cd /opt/sonarqube/
+  sudo groupadd sonar
+  sudo useradd -c "SonarQube - User" -d /opt/sonarqube/ -g sonar sonar
+  sudo chown sonar:sonar /opt/sonarqube/ -R
+  
+  sudo vim /opt/sonarqube/conf/sonar.properties
+  
+  ####Un-comment these lines and modify them as necessary.
 
-Sonarqube-9v installation steps:
---------------------------------
-1. wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.0.1.46107.zip
-ls
-2. sudo apt -y install unzip
-3. sudo unzip sonarqube-*.zip -d /opt
-4. sudo mv /opt/sonarqube-* /opt/sonarqube
+   sonar.jdbc.username=admin
+   sonar.jdbc.password=admin
 
-5. sudo groupadd sonar
-6. sudo useradd -d /opt/sonarqube -g sonar sonar
-7. sudo chown sonar:sonar /opt/sonarqube -R
+  vim /etc/systemd/system/sonarqube.service
+  
+  ####Add this content into the “sonarqube.service” file.
 
-8. sudo nano /opt/sonarqube/conf/sonar.properties
-       uncomment and update username and password
-#sonar.jdbc.username=
-#sonar.jdbc.password=
-
-9. Edit the sonar script file.
------------------------------------
-
-$ sudo nano /opt/sonarqube/bin/linux-x86-64/sonar.sh
-###About 50 lines down, locate this line:####
-
-#RUN_AS_USER=
-Uncomment the line and change it to:
-
-RUN_AS_USER=sonar
-
-
-10. sudo nano /etc/systemd/system/sonar.service
-     add below script in the sonar.service file
 [Unit]
 Description=SonarQube service
 After=syslog.target network.target
@@ -103,17 +90,23 @@ Type=forking
 ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
 ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
 
-User=root
-Group=root
+User=sonar
+Group=sonar
 Restart=always
+
+LimitNOFILE=65536
+LimitNPROC=4096
+
 
 [Install]
 WantedBy=multi-user.target
 
-11. sudo systemctl daemon-reload
-12. sudo systemctl enable sonar 
-13. sudo systemctl start sonar
-14. sudo systemctl status sonar
+
+  systemctl daemon-reload 
+  systemctl enable sonarqube.service
+  systemctl start sonarqube.service
+  systemctl status -l sonarqube.service
+
 
 Install nexus
 ------------------
