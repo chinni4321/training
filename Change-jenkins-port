@@ -1,2 +1,9 @@
 https://stackoverflow.com/questions/70100117/cant-get-jenkins-to-run-on-different-port-on-ubuntu-20-4
 https://www.jenkins.io/doc/book/installing/linux/
+
+
+systemctl stop jenkins
+vi /lib/systemd/system/jenkins.service
+systemctl daemon-reload
+systemctl start jenkins
+systemctl status jenkins
