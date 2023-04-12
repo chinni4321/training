@@ -19,6 +19,7 @@ docker attach containerID
 docker container ls -s (To list the container)
 docker rm -f $(docker ps -a -q) (To delete running containers)
 docker rmi -f $(docker images -aq) (To delete all images)
+docker volume rm $(docker volume ls -q) To delete the volumes
 docker kill $(docker ps -q)
 docker stats ContainerID (To offer the statistics of a running container)
 docker pause ContainerID
