@@ -82,3 +82,22 @@ To create overlay network ----> multi-host connecting network basiclly it uses f
 docker run --name jenkins -p 9091:8080 -p 50000:50000 -v test-volume:/var/jenkins_home jenkins
 docker run -it --network host jenkins/jenkins:lts-jdk11
 docker run -it --network none centos /bin/bash
+
+
+Jenkins Dockerfile:
+----------------------
+
+FROM jenkins/jenkins
+USER root
+RUN apt-get update -qq \
+&& apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+RUN add-apt-repository \
+"deb [arch=amd64] https://download.docker.com/linux/debian \
+$(lsb_release -cs) \
+stable"
+RUN apt-get update -qq \
+&& apt-get -y install docker-ce
+RUN usermod -aG docker jenkins
+EXPOSE 9091
+
