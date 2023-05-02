@@ -25,6 +25,11 @@ then apply it by executing :
 Refrence: http://javedmandary.blogspot.com/2016/09/install-maven-339-on-ubuntu.html
 ----------------------------------------------------------------------------------------
 
+Latest Jenkins installation steps:
+---------------------------------
+https://pkg.origin.jenkins.io/debian-stable/
+
+
 Install jenkins 
 -------------------
 
