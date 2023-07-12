@@ -6,7 +6,7 @@ sudo apt-get install openjdk-8-jdk -y
 
 Install Maven 3.3.9
 ---------------------
-wget http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
 sudo mkdir -p /usr/local/apache-maven
 sudo mv apache-maven-3.3.9-bin.tar.gz /usr/local/apache-maven
 cd /usr/local/apache-maven
