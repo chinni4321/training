@@ -8,7 +8,8 @@ kubectl delete svc serviceName -n dev
 kubectl get all --all-namespaces -o yaml > backup     #To take the yaml backup
 
 
-kubectl run nginx-pod --image=nginx:alpine
+kubectl create deploy nginx --image=nginx:1.7.8 --replicas=2 --port=80
+kubectl expose deployment nginx --name nginx-service --type=LoadBalancer --port=80
 kubectl run redis --image=redis:alpine -l tier=db
 kubectl expose pod redis --port=6379 --name redis-service
 kubectl create deployment webapp --image=kodekloud/webapp-color
