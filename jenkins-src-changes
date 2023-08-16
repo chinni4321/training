@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                checkout([$class: 'GitSCM', 
+                          branches: [[name: '*/main']],
+                          userRemoteConfigs: [[url: 'https://github.com/chinni4321/helloworld-project-1.git']]])
+            }
+        }
+        
+        stage('Check changes in src') {
+            steps {
+                script {
+                    def srcChanges = sh(
+                        script: "git diff --quiet --exit-code HEAD~1..HEAD src",
+                        returnStatus: true
+                    )
+                    if (srcChanges == 0) {
+                        echo "No changes in the 'src' directory. Aborting the pipeline."
+                        currentBuild.result = 'ABORTED'
+                        error("Pipeline aborted due to no changes in 'src'")
+                    } else {
+                        echo "There are changes in the 'src' directory. Proceeding with the Maven build."
+                    }
+                }
+            }
+        }
+        
+        stage('Maven Build') {
+            when {
+                expression {
+                    return currentBuild.resultIsBetterOrEqualTo('ABORTED')
+                }
+            }
+            steps {
+                // Add your Maven build steps here
+                sh 'mvn clean package'
+            }
+        }
+        
+        // Add more stages as needed
+    }
+}
