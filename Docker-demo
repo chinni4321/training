@@ -83,6 +83,12 @@ docker run --name jenkins -p 9091:8080 -p 50000:50000 -v test-volume:/var/jenkin
 docker run -it --network host jenkins/jenkins:lts-jdk11
 docker run -it --network none centos /bin/bash
 
+Docker-with-docker
+-----------------
+
+docker run -u root -dt --name test-jnlp -v /var/run/docker.sock:/var/run/docker.sock -ti jenkins/jnlp-agent-docker 
+docker commit test-jnlp dockerhub.paypalcorp.com/hwcldengopsdev/jnlp-agent-docker-cus:1.0.0
+
 
 Jenkins Dockerfile:
 ----------------------
