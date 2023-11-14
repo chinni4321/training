@@ -87,7 +87,7 @@ Docker-with-docker
 -----------------
 
 docker run -u root -dt --name test-jnlp -v /var/run/docker.sock:/var/run/docker.sock -ti jenkins/jnlp-agent-docker 
-docker commit test-jnlp dockerhub.paypalcorp.com/hwcldengopsdev/jnlp-agent-docker-cus:1.0.0
+docker commit test-jnlp jnlp-agent-docker-cus:1.0.0
 
 Ref: https://rahul-official-150.medium.com/docker-inside-a-docker-container-e7ae144464f0
 
