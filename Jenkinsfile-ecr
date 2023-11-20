@@ -1,32 +1,37 @@
 pipeline {
-    agent { label 'master' }
+    agent any
     
        
     environment {
 
-      sonar_url = 'http://172.31.38.119:9000'
+
+      sonar_url = 'http://172.31.92.159:9000'
       sonar_username = 'admin'
       sonar_password = 'admin'
-      nexus_url = '172.31.38.119:8081'
-      artifact_version = '4.0.0'
-      imagename = "664773643081.dkr.ecr.sa-east-1.amazonaws.com/batch11"
+      NEXUS_VERSION = "nexus3"
+      NEXUS_PROTOCOL = "http"
+      NEXUS_URL = "172.31.87.170:8081"
+      NEXUS_REPOSITORY = "release"
+      NEXUS_CREDENTIAL_ID = "nexus-cred"
+      NEXUS_RELEASE = "2.0.0"
+      imagename = "202363990436.dkr.ecr.us-east-1.amazonaws.com/batch30"
       registryCredential = 'aws-cred'
       dockerImage = ''
 
  } 
-       tools {
-        jdk 'Java8'
-        maven 'Maven3.3.9'
-    }
+ tools {
+jdk 'java'
+maven 'Maven'
+}
 
     stages { 
-      stage('Git Clone') {
-            steps {
-                // Get some code from a GitHub repository
-                git 'https://github.com/chinni4321/game-of-life.git'
+      stage('Git clone'){
+        steps {
+        git branch: 'master',
+        url: 'https://github.com/lekhya16/maven-standalone-application.git'
 
-            }
         }
+    }
         stage('Maven build') {
             steps {
                 sh  'mvn clean install -U -Dmaven.test.skip=true'
@@ -35,19 +40,48 @@ pipeline {
         }
          stage ('Sonarqube Analysis'){
            steps {
-           withSonarQubeEnv('sonarqube') {
+           withSonarQubeEnv('Sonarqube') {
            sh '''
            mvn -e -B sonar:sonar -Dsonar.java.source=1.8 -Dsonar.host.url="${sonar_url}" -Dsonar.login="${sonar_username}" -Dsonar.password="${sonar_password}" -Dsonar.sourceEncoding=UTF-8
            '''
            }
          }
       } 
-      stage ('Publish Artifact') {
-        steps {
-          nexusArtifactUploader artifacts: [[artifactId: 'gameoflife', classifier: '', file: "/var/lib/jenkins/workspace/pipeline/gameoflife-build/target/gameoflife-build-1.0-SNAPSHOT.jar", type: 'jar']], credentialsId: '7f46f555-b7cd-4876-b374-e7a218654c2c', groupId: 'com.wakaleo.gameoflife', nexusUrl: "${nexus_url}", nexusVersion: 'nexus3', protocol: 'http', repository: 'release', version: "${artifact_version}"
-         archiveArtifacts '**/*.jar'
+stage("Publish to Nexus Repository Manager") {
+            steps {
+                script {
+                    pom = readMavenPom file: "pom.xml";
+                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    artifactPath = filesByGlob[0].path;
+                    artifactExists = fileExists artifactPath;
+                    if(artifactExists) {
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                            groupId: pom.groupId,
+                            version: NEXUS_RELEASE,
+                            repository: NEXUS_REPOSITORY,
+                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            artifacts: [
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: "pom.xml",
+                                type: "pom"]
+                            ]
+                        );
+                    } else {
+                        error "*** File: ${artifactPath}, could not be found";
+                    }
+                }
+            }
         }
-      }
    stage('Building image') {
     steps{
       script {
@@ -58,13 +92,16 @@ pipeline {
     stage('Deploy Image') {
       steps{
       script {
-        docker.withRegistry('https://664773643081.dkr.ecr.sa-east-1.amazonaws.com/batch11:aws-cred')  {
+        withCredentials([aws(credentialsId: "aws-cred")]) {
+        sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 202363990436.dkr.ecr.us-east-1.amazonaws.com"
+        docker.withRegistry('https://202363990436.dkr.ecr.us-east-1.amazonaws.com/batch30:aws-cred')  {
          dockerImage.push("$BUILD_NUMBER")
          dockerImage.push('latest')
         }
        }
       }
-   }
+     }
+    }
       stage('Remove Unused docker image') {
         steps{
          sh "docker rmi $imagename:$BUILD_NUMBER"
@@ -72,4 +109,4 @@ pipeline {
        }
       }
  }
-}    
+}  
