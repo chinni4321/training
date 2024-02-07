@@ -1,0 +1,17 @@
+Terraform installation steps:
+-----------------------------
+apt-get update
+apt-get install unzip -y
+wget https://releases.hashicorp.com/terraform/1.7.2/terraform_1.7.2_linux_amd64.zip
+unzip terraform_1.7.2_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+terraform version
+echo $PATH
+export PATH=$PATH:/usr/local/bin
+source ~/.bashrc
+terraform version
+
+create service account with Admin access and dowmload a json key name it "terra.json":
+-------------------------------------------------------------------------------------
+export GOOGLE_APPLICATION_CREDENTIALS="terra.json"
+
