@@ -7,4 +7,4 @@
  aws ec2 stop-instances --instance-ids i-02151c9b8977651cc
  aws ec2 stop-instances --instance-ids i-0aa5c548b199c38b2
  
- aws s3 cp s3://bucket-name . – recursive
+ aws s3 cp . s3://chinni57589  --recursive
