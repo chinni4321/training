@@ -6,3 +6,5 @@
  aws ec2 create-tags     --resources ami-0b5eea76982371e91 i-0aa5c548b199c38b2     --tags Key=Name,Value=awscli
  aws ec2 stop-instances --instance-ids i-02151c9b8977651cc
  aws ec2 stop-instances --instance-ids i-0aa5c548b199c38b2
+ 
+ aws s3 cp s3://bucket-name . – recursive
