@@ -1,0 +1,7 @@
+Find the latest version of jenkins https://updates.jenkins.io/download/war/ and download latest
+stop the jenkins
+/usr/share/java/ rename the old jenkins.war
+download the jenkins.war /usr/share/java/
+restart the jenkins
+
+Note: if jenkins version is 2.463 then java 17 required 
