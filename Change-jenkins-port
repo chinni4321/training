@@ -1,5 +1,6 @@
 https://stackoverflow.com/questions/70100117/cant-get-jenkins-to-run-on-different-port-on-ubuntu-20-4
 https://www.jenkins.io/doc/book/installing/linux/
+https://stackoverflow.com/questions/28340877/how-to-change-port-number-for-jenkins-installation-in-ubuntu-12-04
 
 
 systemctl stop jenkins
