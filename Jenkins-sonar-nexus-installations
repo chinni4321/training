@@ -139,27 +139,27 @@ WantedBy=multi-user.target
 Install nexus
 ------------------
 
-1) sudo wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz
-2) sudo tar -xvf latest-unix.tar.gz
-3) mv nexus-* /opt/
-4) mv sonatype-work/ /opt/
-5) cd /opt
-6) mv nexus-*/ nexus
-7) ###Create a user called Nexus####
+sudo wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+sudo tar -xvf latest-unix.tar.gz
+mv nexus-* /opt/
+mv sonatype-work/ /opt/
+cd /opt
+mv nexus-*/ nexus
+###Create a user called Nexus####
      sudo adduser nexus
 
-8) Give permission to Nexus user
+Give permission to Nexus user
 sudo chown -R nexus:nexus /opt/nexus
 sudo chown -R nexus:nexus /opt/sonatype-work
 
-9) sudo vim /opt/nexus/bin/nexus.rc
+sudo vim /opt/nexus/bin/nexus.rc
     run_as_user="nexus"
  
-10)Modify memory settings
+Modify memory settings
   sudo vim /opt/nexus/bin/nexus.vmoptions
   change to 512m
 
-11) Configure Nexus to run as a service
+Configure Nexus to run as a service
       sudo vim /etc/systemd/system/nexus.service
        Copy the below content.
        
@@ -178,13 +178,13 @@ Restart=on-abort
 [Install]
 WantedBy=multi-user.target
 
-12) Now Start Nexus
+Now Start Nexus
      sudo systemctl enable nexus
      sudo systemctl start nexus
      sudo systemctl status nexus
 
-13) Install plugin Pipeline Utility Steps
-14) tail -f /opt/sonatype-work/nexus3/log/nexus.log
+Install plugin Pipeline Utility Steps
+tail -f /opt/sonatype-work/nexus3/log/nexus.log
 
 
 
