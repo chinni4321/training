@@ -138,9 +138,10 @@ WantedBy=multi-user.target
 
 Install nexus
 ------------------
-
-sudo wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz
-sudo tar -xvf latest-unix.tar.gz
+sudo wget https://sonatype-download.global.ssl.fastly.net/repository/downloads-prod-group/3/nexus-3.80.0-06-linux-x86_64.tar.gz
+sudo tar -xvf nexus-3.80.0-06-linux-x86_64.tar.gz
+#sudo wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+#sudo tar -xvf latest-unix.tar.gz
 mv nexus-* /opt/
 mv sonatype-work/ /opt/
 cd /opt
