@@ -27,3 +27,31 @@ sudo apt-get install kubectl
 sudo chown -R jenkins:jenkins /var/lib/jenkins
 
 sudo chmod 666 /var/run/docker.sock
+--------------------------------------------------------------------------------
+
+
+
+Install cloudSDK latest Commands 
+________________________________
+
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
+  sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list > /dev/null
+
+sudo apt update
+sudo apt install google-cloud-sdk -y
+sudo apt install google-cloud-sdk-gke-gcloud-auth-plugin -y
+
+gcloud init
+
+
+Install Kubectl:
+---------------
+curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+kubectl version --client
+
+
