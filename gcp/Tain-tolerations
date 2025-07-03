@@ -36,6 +36,7 @@ spec:
     image: nginx
     imagePullPolicy: IfNotPresent
   tolerations:
-  - key: "example-key"
-    operator: "Exists"
+  - key: "key1"
+    operator: "Equal"
+    value: "value1"
     effect: "NoSchedule"
